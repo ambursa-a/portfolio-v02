@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import TaskFlow from "@/pages/taskflow";
 import ShopNow from "@/pages/shopnow";
+import Game from "@/pages/game";
 import { ThemeProvider, useTheme } from "@/lib/theme";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Sun, Moon } from "lucide-react";
@@ -376,9 +377,18 @@ function Portfolio() {
           <span className="text-xs font-semibold tracking-tight text-foreground">
             Faisal Ambursa
           </span>
-          <span className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} · Nigeria
-          </span>
+          <div className="flex items-center gap-5">
+            <button
+              onClick={() => navigate("/game")}
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors font-medium"
+              title="Play a game"
+            >
+              🐍 Snake
+            </button>
+            <span className="text-xs text-muted-foreground">
+              © {new Date().getFullYear()} · Nigeria
+            </span>
+          </div>
         </div>
       </footer>
     </div>
@@ -391,6 +401,7 @@ function Router() {
       <Route path="/" component={Portfolio} />
       <Route path="/taskflow" component={TaskFlow} />
       <Route path="/shopnow" component={ShopNow} />
+      <Route path="/game" component={Game} />
       <Route component={NotFound} />
     </Switch>
   );
