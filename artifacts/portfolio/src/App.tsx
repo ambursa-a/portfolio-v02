@@ -104,7 +104,7 @@ function Portfolio() {
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
         <div className="max-w-[1000px] mx-auto px-8 h-14 flex items-center justify-between">
           <span className="font-semibold text-sm tracking-tight text-foreground">
-            MA
+            FA
           </span>
           <div className="flex gap-8">
             {NAV_LINKS.map((link) => (
@@ -144,7 +144,7 @@ function Portfolio() {
 
           <FadeIn delay={0.1}>
             <h1 className="text-[clamp(3rem,8vw,6.5rem)] font-bold leading-[1.0] tracking-[-0.04em] mb-8 text-foreground">
-              Muhammad<br />Abubakar
+              Faisal<br />Ambursa
             </h1>
           </FadeIn>
 
@@ -362,7 +362,7 @@ function Portfolio() {
       <footer className="border-t border-border py-8 px-8">
         <div className="max-w-[1000px] mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
           <span className="text-xs font-semibold tracking-tight text-foreground">
-            Muhammad Abubakar
+            Faisal Ambursa
           </span>
           <span className="text-xs text-muted-foreground">
             © {new Date().getFullYear()} · Nigeria
