@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Sun, Moon } from "lucide-react";
 import { useLocation } from "wouter";
+import { useTheme } from "@/lib/theme";
 
 function FadeIn({
   children,
@@ -64,21 +65,31 @@ const PRODUCTS = [
 
 export default function ShopNow() {
   const [, navigate] = useLocation();
+  const { theme, toggle } = useTheme();
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans">
       {/* Nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
-        <div className="max-w-[1000px] mx-auto px-8 h-14 flex items-center gap-6">
+        <div className="max-w-[1000px] mx-auto px-8 h-14 flex items-center justify-between">
+          <div className="flex items-center gap-6">
+            <button
+              onClick={() => navigate("/")}
+              className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </button>
+            <span className="text-sm text-border">|</span>
+            <span className="text-sm font-medium text-foreground">ShopNow</span>
+          </div>
           <button
-            onClick={() => navigate("/")}
-            className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            onClick={toggle}
+            aria-label="Toggle theme"
+            className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" />
-            Back
+            {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
-          <span className="text-sm text-border">|</span>
-          <span className="text-sm font-medium text-foreground">ShopNow</span>
         </div>
       </nav>
 

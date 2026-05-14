@@ -6,8 +6,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import TaskFlow from "@/pages/taskflow";
 import ShopNow from "@/pages/shopnow";
+import { ThemeProvider, useTheme } from "@/lib/theme";
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Sun, Moon } from "lucide-react";
 
 const queryClient = new QueryClient();
 
@@ -78,6 +79,7 @@ function FadeIn({
 function Portfolio() {
   const [activeSection, setActiveSection] = useState("About");
   const [, navigate] = useLocation();
+  const { theme, toggle } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -109,7 +111,7 @@ function Portfolio() {
           <span className="font-semibold text-sm tracking-tight text-foreground">
             FA
           </span>
-          <div className="flex gap-8">
+          <div className="flex items-center gap-8">
             {NAV_LINKS.map((link) => (
               <button
                 key={link}
@@ -126,6 +128,13 @@ function Portfolio() {
                 {link}
               </button>
             ))}
+            <button
+              onClick={toggle}
+              aria-label="Toggle theme"
+              className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+            >
+              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
           </div>
         </div>
       </nav>
@@ -389,14 +398,16 @@ function Router() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-          <Router />
-        </WouterRouter>
-        <Toaster />
-      </TooltipProvider>
-    </QueryClientProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            <Router />
+          </WouterRouter>
+          <Toaster />
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
 
