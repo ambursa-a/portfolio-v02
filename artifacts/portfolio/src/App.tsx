@@ -8,7 +8,7 @@ import TaskFlow from "@/pages/taskflow";
 import ShopNow from "@/pages/shopnow";
 import Game from "@/pages/game";
 import { ThemeProvider, useTheme } from "@/lib/theme";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { ArrowUpRight, Sun, Moon } from "lucide-react";
 
 const queryClient = new QueryClient();
@@ -77,6 +77,93 @@ function FadeIn({
   );
 }
 
+const SEGMENTS = [
+  { w: 7, h: 7 },
+  { w: 8, h: 9 },
+  { w: 9, h: 10 },
+  { w: 10, h: 10 },
+  { w: 11, h: 11 },
+];
+
+function ScrollSnake() {
+  const [, navigate] = useLocation();
+  const [vw, setVw] = useState(() => (typeof window !== "undefined" ? window.innerWidth : 1280));
+
+  useEffect(() => {
+    const onResize = () => setVw(window.innerWidth);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  const { scrollYProgress } = useScroll();
+  const SNAKE_W = 14 + SEGMENTS.length * 12 + 8;
+  const PAD = 24;
+  const xRaw = useTransform(scrollYProgress, [0, 1], [PAD, vw - SNAKE_W - PAD]);
+  const x = useSpring(xRaw, { stiffness: 45, damping: 18, mass: 1.2 });
+
+  const [showTip, setShowTip] = useState(false);
+
+  return (
+    <motion.button
+      onClick={() => navigate("/game")}
+      onHoverStart={() => setShowTip(true)}
+      onHoverEnd={() => setShowTip(false)}
+      className="fixed bottom-5 z-40 flex items-end cursor-pointer select-none"
+      style={{ x }}
+      aria-label="Play Snake"
+    >
+      {/* Tooltip */}
+      {showTip && (
+        <motion.span
+          initial={{ opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-semibold tracking-widest uppercase text-muted-foreground border border-border bg-background px-2 py-0.5"
+        >
+          Play Snake
+        </motion.span>
+      )}
+
+      {/* Snake body — tail first, then head on the right */}
+      <div className="flex items-end gap-[2px]">
+        {SEGMENTS.map((seg, i) => (
+          <motion.div
+            key={i}
+            className="bg-foreground rounded-[2px]"
+            style={{ width: seg.w, height: seg.h }}
+            animate={{ y: [0, -(i % 2 === 0 ? 3 : 1), 0] }}
+            transition={{
+              duration: 0.6,
+              repeat: Infinity,
+              delay: (SEGMENTS.length - i) * 0.08,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
+
+        {/* Head */}
+        <motion.div
+          className="relative bg-foreground rounded-[2px] flex-shrink-0"
+          style={{ width: 14, height: 14 }}
+          animate={{ y: [0, -3, 0] }}
+          transition={{ duration: 0.6, repeat: Infinity, delay: 0, ease: "easeInOut" }}
+        >
+          {/* Eye */}
+          <div className="absolute top-[3px] right-[3px] w-[3px] h-[3px] rounded-full bg-background" />
+          {/* Tongue */}
+          <motion.div
+            className="absolute -right-[5px] top-[7px] flex gap-[2px]"
+            animate={{ scaleX: [1, 0.6, 1] }}
+            transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <div className="w-[2px] h-[3px] bg-foreground" style={{ borderRadius: "0 0 1px 0" }} />
+            <div className="w-[2px] h-[3px] bg-foreground" style={{ borderRadius: "0 0 0 1px" }} />
+          </motion.div>
+        </motion.div>
+      </div>
+    </motion.button>
+  );
+}
+
 function Portfolio() {
   const [activeSection, setActiveSection] = useState("About");
   const [, navigate] = useLocation();
@@ -106,6 +193,7 @@ function Portfolio() {
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-foreground selection:text-background">
+      <ScrollSnake />
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
         <div className="max-w-[1000px] mx-auto px-8 h-14 flex items-center justify-between">
