@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
-import { Switch, Route, Router as WouterRouter } from "wouter";
+import { Switch, Route, Router as WouterRouter, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
+import TaskFlow from "@/pages/taskflow";
+import ShopNow from "@/pages/shopnow";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
@@ -19,7 +21,7 @@ const PROJECTS = [
       "Native iOS task-management app enabling users to create, prioritise, and track daily goals with real-time reminders. Built with MVVM architecture and local Core Data persistence synced to a RESTful backend for seamless offline/online functionality.",
     tags: ["Swift", "SwiftUI", "Core Data", "REST API"],
     year: "2025",
-    link: "#",
+    link: "/taskflow",
   },
   {
     id: 2,
@@ -28,7 +30,7 @@ const PROJECTS = [
       "Full-stack e-commerce platform featuring product listings, shopping cart, JWT-based authentication, and role-based access control for admin and customers. Built from scratch with a secure Node.js/Express API and a dynamic React frontend.",
     tags: ["MongoDB", "Express.js", "React.js", "Node.js"],
     year: "2025",
-    link: "#",
+    link: "/shopnow",
   },
 ];
 
@@ -75,6 +77,7 @@ function FadeIn({
 
 function Portfolio() {
   const [activeSection, setActiveSection] = useState("About");
+  const [, navigate] = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -225,10 +228,10 @@ function Portfolio() {
         <div className="flex flex-col">
           {PROJECTS.map((project, i) => (
             <FadeIn key={project.id} delay={i * 0.1}>
-              <a
-                href={project.link}
+              <button
+                onClick={() => navigate(project.link)}
                 data-testid={`card-project-${project.id}`}
-                className="group block border-t border-border py-10 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-[72px_1fr_auto] gap-x-10 items-start hover:bg-muted/40 transition-colors"
+                className="group w-full text-left border-t border-border py-10 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-[72px_1fr_auto] gap-x-10 items-start hover:bg-muted/40 transition-colors"
               >
                 <span className="text-xs text-muted-foreground font-medium pt-1 hidden sm:block">
                   {project.year}
@@ -259,7 +262,7 @@ function Portfolio() {
                 <div className="hidden sm:block pt-1">
                   <ArrowUpRight className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
                 </div>
-              </a>
+              </button>
             </FadeIn>
           ))}
           <div className="border-t border-border" />
@@ -377,6 +380,8 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Portfolio} />
+      <Route path="/taskflow" component={TaskFlow} />
+      <Route path="/shopnow" component={ShopNow} />
       <Route component={NotFound} />
     </Switch>
   );
