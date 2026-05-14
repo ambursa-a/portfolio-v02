@@ -258,9 +258,8 @@ function Portfolio() {
           <FadeIn delay={0.2}>
             <p className="text-[clamp(0.95rem,1.5vw,1.1rem)] text-muted-foreground max-w-[520px] leading-[1.75] mb-12">
               Passionate about building high-quality iOS applications and full-stack
-              web solutions. Currently pursuing a B.Sc. in Software Engineering at
-              Miva Open University and eager to contribute to collaborative
-              engineering teams.
+              web solutions. A quick learner eager to contribute to collaborative
+              engineering teams and grow through real-world challenges.
             </p>
           </FadeIn>
 
