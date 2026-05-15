@@ -279,6 +279,12 @@ function Portfolio() {
                 {link}
               </button>
             ))}
+            <button
+              onClick={() => navigate("/hosting")}
+              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors border border-border px-3 py-1"
+            >
+              Hosting
+            </button>
             <button onClick={toggle} aria-label="Toggle theme"
               className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
               {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -318,12 +324,18 @@ function Portfolio() {
                   <button
                     key={link}
                     onClick={() => { scrollTo(link); setMenuOpen(false); }}
-                    className="text-left py-3 text-base font-medium border-b border-border last:border-0 transition-colors"
+                    className="text-left py-3 text-base font-medium border-b border-border transition-colors"
                     style={{ color: activeSection === link ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))" }}
                   >
                     {link}
                   </button>
                 ))}
+                <button
+                  onClick={() => { navigate("/hosting"); setMenuOpen(false); }}
+                  className="text-left py-3 text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Hosting
+                </button>
               </div>
             </motion.div>
           )}
