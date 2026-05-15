@@ -195,27 +195,27 @@ function PaperPlane() {
             fill="none"
             style={{ rotate: tiltDeg }}
           >
-            {/* Upper wing */}
+            {/* Upper wing — tip top-left, nose right-centre */}
             <path
-              d="M1 11 L35 1 L26 11 Z"
+              d="M2 2 L34 11 L10 11 Z"
               className="fill-foreground"
             />
-            {/* Lower wing */}
+            {/* Lower wing — tip bottom-left, nose right-centre */}
             <path
-              d="M1 11 L35 21 L26 11 Z"
+              d="M2 20 L34 11 L10 11 Z"
               className="fill-foreground"
               opacity="0.45"
             />
-            {/* Fuselage centre crease */}
+            {/* Fuselage crease from tail to nose */}
             <line
-              x1="1" y1="11" x2="26" y2="11"
+              x1="2" y1="11" x2="34" y2="11"
               className="stroke-background"
               strokeWidth="0.8"
               opacity="0.6"
             />
             {/* Wing fold shadow */}
             <line
-              x1="26" y1="11" x2="20" y2="17"
+              x1="10" y1="11" x2="16" y2="17"
               className="stroke-background"
               strokeWidth="0.6"
               opacity="0.4"
