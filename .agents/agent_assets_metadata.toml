@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "O8bna3uGRVqBZgRxfxfNh"
+uri = "file://faisal-portfolio.zip"
+type = "unspecified"
+title = "Faisal Ambursa — Portfolio Source Code"
