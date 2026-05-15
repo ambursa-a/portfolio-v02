@@ -114,17 +114,11 @@ function CustomCursor() {
   );
 }
 
-const SEGMENTS = [
-  { w: 7, h: 7 },
-  { w: 8, h: 9 },
-  { w: 9, h: 10 },
-  { w: 10, h: 10 },
-  { w: 11, h: 11 },
-];
-
-function ScrollSnake() {
+function PaperPlane() {
   const [, navigate] = useLocation();
   const [vw, setVw] = useState(() => (typeof window !== "undefined" ? window.innerWidth : 1280));
+  const [showTip, setShowTip] = useState(false);
+  const [trailX, setTrailX] = useState(24);
 
   useEffect(() => {
     const onResize = () => setVw(window.innerWidth);
@@ -133,71 +127,103 @@ function ScrollSnake() {
   }, []);
 
   const { scrollYProgress } = useScroll();
-  const SNAKE_W = 14 + SEGMENTS.length * 12 + 8;
   const PAD = 24;
-  const xRaw = useTransform(scrollYProgress, [0, 1], [PAD, vw - SNAKE_W - PAD]);
-  const x = useSpring(xRaw, { stiffness: 45, damping: 18, mass: 1.2 });
+  const PLANE_W = 36;
+  const travelEnd = vw - PLANE_W - PAD;
 
-  const [showTip, setShowTip] = useState(false);
+  const xRaw = useTransform(scrollYProgress, [0, 1], [PAD, travelEnd]);
+  const x = useSpring(xRaw, { stiffness: 50, damping: 20, mass: 1 });
+
+  // Tilt based on horizontal position — nose dips slightly at edges
+  const tiltDeg = useTransform(x, [PAD, travelEnd * 0.5, travelEnd], [-8, 0, 8]);
+
+  // Update trail endpoint to follow plane
+  useEffect(() => {
+    return x.on("change", (v) => setTrailX(v + PLANE_W / 2));
+  }, [x]);
 
   return (
-    <motion.button
-      onClick={() => navigate("/game")}
-      onHoverStart={() => setShowTip(true)}
-      onHoverEnd={() => setShowTip(false)}
-      className="fixed bottom-5 z-40 flex items-end cursor-pointer select-none"
-      style={{ x }}
-      aria-label="Play Snake"
-    >
-      {/* Tooltip */}
-      {showTip && (
-        <motion.span
-          initial={{ opacity: 0, y: 4 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-semibold tracking-widest uppercase text-muted-foreground border border-border bg-background px-2 py-0.5"
-        >
-          Play Snake
-        </motion.span>
-      )}
+    <>
+      {/* Dashed trail line behind the plane */}
+      <svg
+        className="fixed bottom-[28px] left-0 z-39 pointer-events-none hidden sm:block"
+        style={{ width: vw, height: 2, overflow: "visible" }}
+      >
+        <motion.line
+          x1={PAD + PLANE_W / 2}
+          y1={1}
+          x2={trailX}
+          y2={1}
+          stroke="hsl(var(--border))"
+          strokeWidth={1}
+          strokeDasharray="4 5"
+        />
+      </svg>
 
-      {/* Snake body — tail first, then head on the right */}
-      <div className="flex items-end gap-[2px]">
-        {SEGMENTS.map((seg, i) => (
-          <motion.div
-            key={i}
-            className="bg-foreground rounded-[2px]"
-            style={{ width: seg.w, height: seg.h }}
-            animate={{ y: [0, -(i % 2 === 0 ? 3 : 1), 0] }}
-            transition={{
-              duration: 0.6,
-              repeat: Infinity,
-              delay: (SEGMENTS.length - i) * 0.08,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
+      {/* Plane */}
+      <motion.button
+        onClick={() => navigate("/game")}
+        onHoverStart={() => setShowTip(true)}
+        onHoverEnd={() => setShowTip(false)}
+        className="fixed bottom-4 z-40 select-none"
+        style={{ x }}
+        aria-label="Play game"
+      >
+        <AnimatePresence>
+          {showTip && (
+            <motion.span
+              key="tip"
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 4 }}
+              className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-semibold tracking-widest uppercase text-muted-foreground border border-border bg-background px-2 py-0.5"
+            >
+              Play Game
+            </motion.span>
+          )}
+        </AnimatePresence>
 
-        {/* Head */}
+        {/* Gentle float animation */}
         <motion.div
-          className="relative bg-foreground rounded-[2px] flex-shrink-0"
-          style={{ width: 14, height: 14 }}
-          animate={{ y: [0, -3, 0] }}
-          transition={{ duration: 0.6, repeat: Infinity, delay: 0, ease: "easeInOut" }}
+          animate={{ y: [0, -4, 0] }}
+          transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
         >
-          {/* Eye */}
-          <div className="absolute top-[3px] right-[3px] w-[3px] h-[3px] rounded-full bg-background" />
-          {/* Tongue */}
-          <motion.div
-            className="absolute -right-[5px] top-[7px] flex gap-[2px]"
-            animate={{ scaleX: [1, 0.6, 1] }}
-            transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+          <motion.svg
+            width={PLANE_W}
+            height={22}
+            viewBox="0 0 36 22"
+            fill="none"
+            style={{ rotate: tiltDeg }}
           >
-            <div className="w-[2px] h-[3px] bg-foreground" style={{ borderRadius: "0 0 1px 0" }} />
-            <div className="w-[2px] h-[3px] bg-foreground" style={{ borderRadius: "0 0 0 1px" }} />
-          </motion.div>
+            {/* Upper wing */}
+            <path
+              d="M1 11 L35 1 L26 11 Z"
+              className="fill-foreground"
+            />
+            {/* Lower wing */}
+            <path
+              d="M1 11 L35 21 L26 11 Z"
+              className="fill-foreground"
+              opacity="0.45"
+            />
+            {/* Fuselage centre crease */}
+            <line
+              x1="1" y1="11" x2="26" y2="11"
+              className="stroke-background"
+              strokeWidth="0.8"
+              opacity="0.6"
+            />
+            {/* Wing fold shadow */}
+            <line
+              x1="26" y1="11" x2="20" y2="17"
+              className="stroke-background"
+              strokeWidth="0.6"
+              opacity="0.4"
+            />
+          </motion.svg>
         </motion.div>
-      </div>
-    </motion.button>
+      </motion.button>
+    </>
   );
 }
 
@@ -232,7 +258,7 @@ function Portfolio() {
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-foreground selection:text-background">
       <CustomCursor />
-      <ScrollSnake />
+      <PaperPlane />
 
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
