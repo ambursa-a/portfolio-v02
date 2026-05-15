@@ -7,6 +7,7 @@ import NotFound from "@/pages/not-found";
 import TaskFlow from "@/pages/taskflow";
 import ShopNow from "@/pages/shopnow";
 import Game from "@/pages/game";
+import Hosting from "@/pages/hosting";
 import { ThemeProvider, useTheme } from "@/lib/theme";
 import { motion, useScroll, useTransform, useSpring, useMotionValue, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Sun, Moon } from "lucide-react";
@@ -567,6 +568,12 @@ function Portfolio() {
           </span>
           <div className="flex items-center gap-5">
             <button
+              onClick={() => navigate("/hosting")}
+              className="text-xs text-muted-foreground hover:text-foreground transition-colors font-medium"
+            >
+              Hosting & Domains
+            </button>
+            <button
               onClick={() => navigate("/game")}
               className="text-xs text-muted-foreground hover:text-foreground transition-colors font-medium"
               title="Play a game"
@@ -590,6 +597,7 @@ function Router() {
       <Route path="/taskflow" component={TaskFlow} />
       <Route path="/shopnow" component={ShopNow} />
       <Route path="/game" component={Game} />
+      <Route path="/hosting" component={Hosting} />
       <Route component={NotFound} />
     </Switch>
   );
