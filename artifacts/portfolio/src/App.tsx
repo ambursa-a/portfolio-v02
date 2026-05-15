@@ -8,7 +8,7 @@ import TaskFlow from "@/pages/taskflow";
 import ShopNow from "@/pages/shopnow";
 import Game from "@/pages/game";
 import { ThemeProvider, useTheme } from "@/lib/theme";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, useMotionValue, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Sun, Moon } from "lucide-react";
 
 const queryClient = new QueryClient();
@@ -74,6 +74,43 @@ function FadeIn({
     >
       {children}
     </motion.div>
+  );
+}
+
+function CustomCursor() {
+  const mx = useMotionValue(-100);
+  const my = useMotionValue(-100);
+  const [visible, setVisible] = useState(false);
+  const [clicking, setClicking] = useState(false);
+  const sx = useSpring(mx, { stiffness: 200, damping: 22, mass: 0.5 });
+  const sy = useSpring(my, { stiffness: 200, damping: 22, mass: 0.5 });
+  const cx = useTransform(sx, v => v - 14);
+  const cy = useTransform(sy, v => v - 14);
+
+  useEffect(() => {
+    const move = (e: MouseEvent) => { mx.set(e.clientX); my.set(e.clientY); setVisible(true); };
+    const leave = () => setVisible(false);
+    const down = () => setClicking(true);
+    const up = () => setClicking(false);
+    window.addEventListener("mousemove", move);
+    window.addEventListener("mouseleave", leave);
+    window.addEventListener("mousedown", down);
+    window.addEventListener("mouseup", up);
+    return () => {
+      window.removeEventListener("mousemove", move);
+      window.removeEventListener("mouseleave", leave);
+      window.removeEventListener("mousedown", down);
+      window.removeEventListener("mouseup", up);
+    };
+  }, [mx, my]);
+
+  return (
+    <motion.div
+      className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full border border-foreground hidden md:block"
+      style={{ x: cx, y: cy, opacity: visible ? 1 : 0, mixBlendMode: "difference" }}
+      animate={{ width: clicking ? 18 : 28, height: clicking ? 18 : 28 }}
+      transition={{ width: { duration: 0.12 }, height: { duration: 0.12 } }}
+    />
   );
 }
 
@@ -168,6 +205,7 @@ function Portfolio() {
   const [activeSection, setActiveSection] = useState("About");
   const [, navigate] = useLocation();
   const { theme, toggle } = useTheme();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -193,39 +231,76 @@ function Portfolio() {
 
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-foreground selection:text-background">
+      <CustomCursor />
       <ScrollSnake />
+
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
-        <div className="max-w-[1000px] mx-auto px-8 h-14 flex items-center justify-between">
-          <span className="font-semibold text-sm tracking-tight text-foreground">
-            FA
-          </span>
-          <div className="flex items-center gap-8">
+        <div className="max-w-[1000px] mx-auto px-5 sm:px-8 h-14 flex items-center justify-between">
+          <span className="font-semibold text-sm tracking-tight text-foreground">FA</span>
+
+          {/* Desktop links */}
+          <div className="hidden md:flex items-center gap-8">
             {NAV_LINKS.map((link) => (
               <button
                 key={link}
                 onClick={() => scrollTo(link)}
                 data-testid={`nav-${link.toLowerCase()}`}
                 className="text-sm font-medium transition-colors"
-                style={{
-                  color:
-                    activeSection === link
-                      ? "hsl(var(--foreground))"
-                      : "hsl(var(--muted-foreground))",
-                }}
+                style={{ color: activeSection === link ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))" }}
               >
                 {link}
               </button>
             ))}
-            <button
-              onClick={toggle}
-              aria-label="Toggle theme"
-              className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-            >
+            <button onClick={toggle} aria-label="Toggle theme"
+              className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
               {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
           </div>
+
+          {/* Mobile right side */}
+          <div className="flex items-center gap-2 md:hidden">
+            <button onClick={toggle} aria-label="Toggle theme"
+              className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
+              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
+            <button
+              onClick={() => setMenuOpen(o => !o)}
+              aria-label="Toggle menu"
+              className="w-8 h-8 flex flex-col items-center justify-center gap-[5px] text-foreground"
+            >
+              <span className={`block w-5 h-[1.5px] bg-foreground transition-all duration-200 ${menuOpen ? "rotate-45 translate-y-[6.5px]" : ""}`} />
+              <span className={`block w-5 h-[1.5px] bg-foreground transition-all duration-200 ${menuOpen ? "opacity-0" : ""}`} />
+              <span className={`block w-5 h-[1.5px] bg-foreground transition-all duration-200 ${menuOpen ? "-rotate-45 -translate-y-[6.5px]" : ""}`} />
+            </button>
+          </div>
         </div>
+
+        {/* Mobile dropdown */}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.22, ease: "easeInOut" }}
+              className="overflow-hidden border-t border-border bg-background md:hidden"
+            >
+              <div className="flex flex-col px-5 py-4 gap-1">
+                {NAV_LINKS.map((link) => (
+                  <button
+                    key={link}
+                    onClick={() => { scrollTo(link); setMenuOpen(false); }}
+                    className="text-left py-3 text-base font-medium border-b border-border last:border-0 transition-colors"
+                    style={{ color: activeSection === link ? "hsl(var(--foreground))" : "hsl(var(--muted-foreground))" }}
+                  >
+                    {link}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       {/* Hero */}
@@ -434,7 +509,7 @@ function Portfolio() {
       {/* Contact */}
       <section id="contact" className="max-w-[1000px] mx-auto px-8 py-28 pb-40">
         <FadeIn>
-          <div className="border border-border p-12 sm:p-20">
+          <div className="border border-border p-6 sm:p-12 md:p-20">
             <p className="text-xs font-semibold text-foreground tracking-widest uppercase mb-6">
               Get in touch
             </p>
@@ -470,7 +545,7 @@ function Portfolio() {
               className="text-xs text-muted-foreground hover:text-foreground transition-colors font-medium"
               title="Play a game"
             >
-              🐍 Snake
+              🎮 Game
             </button>
             <span className="text-xs text-muted-foreground">
               © {new Date().getFullYear()} · Nigeria

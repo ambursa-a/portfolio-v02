@@ -121,9 +121,9 @@ export default function TaskFlow() {
                 TaskFlow — iPhone 16 Pro
               </span>
             </div>
-            <div className="flex gap-0 min-h-[340px]">
+            <div className="flex flex-col sm:flex-row min-h-[200px] sm:min-h-[340px]">
               {/* Screen 1 — Today */}
-              <div className="flex-1 border-r border-border p-6 flex flex-col gap-4">
+              <div className="flex-1 border-b sm:border-b-0 sm:border-r border-border p-4 sm:p-6 flex flex-col gap-3 sm:gap-4">
                 <p className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
                   Today
                 </p>
@@ -170,7 +170,7 @@ export default function TaskFlow() {
                 ))}
               </div>
               {/* Screen 2 — Stats */}
-              <div className="flex-1 p-6 flex flex-col gap-6">
+              <div className="flex-1 p-4 sm:p-6 flex flex-col gap-4 sm:gap-6">
                 <p className="text-xs font-semibold tracking-widest uppercase text-muted-foreground">
                   Weekly Overview
                 </p>

@@ -240,7 +240,7 @@ export default function ShopNow() {
             <p className="text-xs font-semibold tracking-widest uppercase text-muted-foreground mb-4">
               Architecture
             </p>
-            <div className="flex flex-col sm:flex-row gap-0 sm:gap-0 text-sm text-center">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 text-sm text-center">
               {["React SPA", "Express REST API", "MongoDB Atlas"].map(
                 (layer, i, arr) => (
                   <div key={layer} className="flex items-center">
