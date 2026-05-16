@@ -93,21 +93,32 @@ function CustomCursor() {
     const leave = () => setVisible(false);
     const down = () => setClicking(true);
     const up = () => setClicking(false);
+    const touch = (e: TouchEvent) => {
+      const t = e.touches[0];
+      if (t) { mx.set(t.clientX); my.set(t.clientY); setVisible(true); }
+    };
+    const touchEnd = () => setVisible(false);
     window.addEventListener("mousemove", move);
     window.addEventListener("mouseleave", leave);
     window.addEventListener("mousedown", down);
     window.addEventListener("mouseup", up);
+    window.addEventListener("touchmove", touch, { passive: true });
+    window.addEventListener("touchstart", touch, { passive: true });
+    window.addEventListener("touchend", touchEnd);
     return () => {
       window.removeEventListener("mousemove", move);
       window.removeEventListener("mouseleave", leave);
       window.removeEventListener("mousedown", down);
       window.removeEventListener("mouseup", up);
+      window.removeEventListener("touchmove", touch);
+      window.removeEventListener("touchstart", touch);
+      window.removeEventListener("touchend", touchEnd);
     };
   }, [mx, my]);
 
   return (
     <motion.div
-      className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full border border-foreground hidden md:block"
+      className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full border-2 border-foreground"
       style={{ x: cx, y: cy, opacity: visible ? 1 : 0, mixBlendMode: "difference" }}
       animate={{ width: clicking ? 18 : 28, height: clicking ? 18 : 28 }}
       transition={{ width: { duration: 0.12 }, height: { duration: 0.12 } }}
@@ -409,13 +420,13 @@ function Portfolio() {
                 <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://x.com"
                 target="_blank"
                 rel="noreferrer"
-                data-testid="link-linkedin"
+                data-testid="link-x"
                 className="text-xs text-muted-foreground font-medium hover:text-foreground transition-colors flex items-center gap-1 group"
               >
-                LinkedIn
+                X
                 <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
               </a>
             </div>

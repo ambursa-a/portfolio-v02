@@ -199,8 +199,8 @@
     background: hsl(var(--border));
     border-radius: 2px;
   }
-  /* Hide native cursor on desktop where custom cursor is shown */
-  @media (pointer: fine) and (min-width: 768px) {
+  /* Hide native cursor where custom cursor is shown */
+  @media (pointer: fine) {
     * { cursor: none !important; }
   }
 }
