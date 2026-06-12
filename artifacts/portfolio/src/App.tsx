@@ -6,8 +6,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import TaskFlow from "@/pages/taskflow";
 import ShopNow from "@/pages/shopnow";
-import Game from "@/pages/game";
 import Hosting from "@/pages/hosting";
+import { GameWidget } from "@/components/GameWidget";
 import { ThemeProvider, useTheme } from "@/lib/theme";
 import { motion, useScroll, useTransform, useSpring, useMotionValue, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Sun, Moon } from "lucide-react";
@@ -136,8 +136,7 @@ function CustomCursor() {
   );
 }
 
-function PaperPlane() {
-  const [, navigate] = useLocation();
+function PaperPlane({ onOpen }: { onOpen?: () => void }) {
   const [vw, setVw] = useState(() => (typeof window !== "undefined" ? window.innerWidth : 1280));
   const [showTip, setShowTip] = useState(false);
   const [trailX, setTrailX] = useState(24);
@@ -184,7 +183,7 @@ function PaperPlane() {
 
       {/* Plane */}
       <motion.button
-        onClick={() => navigate("/game")}
+        onClick={() => onOpen?.()}
         onHoverStart={() => setShowTip(true)}
         onHoverEnd={() => setShowTip(false)}
         className="fixed bottom-4 z-40 select-none"
@@ -254,6 +253,7 @@ function Portfolio() {
   const [, navigate] = useLocation();
   const { theme, toggle } = useTheme();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [widgetOpen, setWidgetOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -280,7 +280,8 @@ function Portfolio() {
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-foreground selection:text-background">
       <CustomCursor />
-      <PaperPlane />
+      <PaperPlane onOpen={() => setWidgetOpen(true)} />
+      <GameWidget externalOpen={widgetOpen} onExternalOpen={setWidgetOpen} />
 
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
@@ -603,13 +604,6 @@ function Portfolio() {
             >
               Hosting & Domains
             </button>
-            <button
-              onClick={() => navigate("/game")}
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors font-medium"
-              title="Play a game"
-            >
-              🎮 Game
-            </button>
             <span className="text-xs text-muted-foreground">
               © {new Date().getFullYear()} · Nigeria
             </span>
@@ -626,7 +620,6 @@ function Router() {
       <Route path="/" component={Portfolio} />
       <Route path="/taskflow" component={TaskFlow} />
       <Route path="/shopnow" component={ShopNow} />
-      <Route path="/game" component={Game} />
       <Route path="/hosting" component={Hosting} />
       <Route component={NotFound} />
     </Switch>
