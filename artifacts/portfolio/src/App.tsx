@@ -416,20 +416,6 @@ function Portfolio() {
             </div>
           </FadeIn>
 
-          <FadeIn delay={0.3}>
-            <div className="flex gap-6">
-              <a
-                href="https://github.com/ambursa-a"
-                target="_blank"
-                rel="noreferrer"
-                data-testid="link-github"
-                className="text-xs text-muted-foreground font-medium hover:text-foreground transition-colors flex items-center gap-1 group"
-              >
-                GitHub
-                <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </a>
-            </div>
-          </FadeIn>
         </div>
       </section>
 
