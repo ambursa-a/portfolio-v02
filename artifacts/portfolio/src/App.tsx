@@ -135,117 +135,6 @@ function CustomCursor() {
   );
 }
 
-function PaperPlane({ onOpen }: { onOpen?: () => void }) {
-  const [vw, setVw] = useState(() => (typeof window !== "undefined" ? window.innerWidth : 1280));
-  const [showTip, setShowTip] = useState(false);
-  const [trailX, setTrailX] = useState(24);
-
-  useEffect(() => {
-    const onResize = () => setVw(window.innerWidth);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
-  const { scrollYProgress } = useScroll();
-  const PAD = 24;
-  const PLANE_W = 36;
-  const travelEnd = vw - PLANE_W - PAD;
-
-  const xRaw = useTransform(scrollYProgress, [0, 1], [PAD, travelEnd]);
-  const x = useSpring(xRaw, { stiffness: 50, damping: 20, mass: 1 });
-
-  // Tilt based on horizontal position — nose dips slightly at edges
-  const tiltDeg = useTransform(x, [PAD, travelEnd * 0.5, travelEnd], [-8, 0, 8]);
-
-  // Update trail endpoint to follow plane
-  useEffect(() => {
-    return x.on("change", (v) => setTrailX(v + PLANE_W / 2));
-  }, [x]);
-
-  return (
-    <>
-      {/* Dashed trail line behind the plane */}
-      <svg
-        className="fixed bottom-[28px] left-0 z-39 pointer-events-none hidden sm:block"
-        style={{ width: vw, height: 2, overflow: "visible" }}
-      >
-        <motion.line
-          x1={PAD + PLANE_W / 2}
-          y1={1}
-          x2={trailX}
-          y2={1}
-          stroke="hsl(var(--border))"
-          strokeWidth={1}
-          strokeDasharray="4 5"
-        />
-      </svg>
-
-      {/* Plane */}
-      <motion.button
-        onClick={() => onOpen?.()}
-        onHoverStart={() => setShowTip(true)}
-        onHoverEnd={() => setShowTip(false)}
-        className="fixed bottom-4 z-40 select-none"
-        style={{ x }}
-        aria-label="Play game"
-      >
-        <AnimatePresence>
-          {showTip && (
-            <motion.span
-              key="tip"
-              initial={{ opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 4 }}
-              className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-semibold tracking-widest uppercase text-muted-foreground border border-border bg-background px-2 py-0.5"
-            >
-              Play Game
-            </motion.span>
-          )}
-        </AnimatePresence>
-
-        {/* Gentle float animation */}
-        <motion.div
-          animate={{ y: [0, -4, 0] }}
-          transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <motion.svg
-            width={PLANE_W}
-            height={22}
-            viewBox="0 0 36 22"
-            fill="none"
-            style={{ rotate: tiltDeg }}
-          >
-            {/* Upper wing — tip top-left, nose right-centre */}
-            <path
-              d="M2 2 L34 11 L10 11 Z"
-              className="fill-foreground"
-            />
-            {/* Lower wing — tip bottom-left, nose right-centre */}
-            <path
-              d="M2 20 L34 11 L10 11 Z"
-              className="fill-foreground"
-              opacity="0.45"
-            />
-            {/* Fuselage crease from tail to nose */}
-            <line
-              x1="2" y1="11" x2="34" y2="11"
-              className="stroke-background"
-              strokeWidth="0.8"
-              opacity="0.6"
-            />
-            {/* Wing fold shadow */}
-            <line
-              x1="10" y1="11" x2="16" y2="17"
-              className="stroke-background"
-              strokeWidth="0.6"
-              opacity="0.4"
-            />
-          </motion.svg>
-        </motion.div>
-      </motion.button>
-    </>
-  );
-}
 
 function Portfolio() {
   const [activeSection, setActiveSection] = useState("About");
@@ -279,7 +168,6 @@ function Portfolio() {
   return (
     <div className="min-h-screen bg-background text-foreground font-sans selection:bg-foreground selection:text-background">
       <CustomCursor />
-      <PaperPlane onOpen={() => setWidgetOpen(true)} />
       <GameWidget externalOpen={widgetOpen} onExternalOpen={setWidgetOpen} />
 
       {/* Navigation */}
