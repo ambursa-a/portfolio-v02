@@ -1,0 +1,85 @@
+Update my portfolio website content only. Do NOT redesign or change the layout, color scheme, typography, spacing, or any visual design decisions already in place. Only update the text content, section copy, and project details as specified below.
+
+---
+
+## HERO SECTION
+
+- Title/headline: "Software & Machine Learning Engineer"
+- Tagline: "I build production systems and intelligent applications."
+- Keep all existing button styles, layout, and animations exactly as they are
+
+---
+
+## ABOUT SECTION
+
+Replace the existing about text with:
+
+"I'm a software engineer and ML practitioner focused on building systems that work at scale. My engineering work spans backend infrastructure, API development, and machine learning — from data pipelines to model deployment.
+
+I'm currently completing my BSc in Software Engineering at Miva Open University and building at the intersection of intelligent systems and real-world infrastructure. I take a deliberate approach to the craft: first principles, clean architecture, and tools that earn their place in a stack."
+
+---
+
+## SKILLS SECTION
+
+Reorganize the existing skills into two categories, keeping the same visual style for skill tags/badges:
+
+**Software Engineering**
+- Node.js / Express
+- React / Next.js
+- PostgreSQL / Prisma ORM
+- REST API Design
+- System Architecture
+- Docker
+
+**Machine Learning & AI**
+- Python
+- PyTorch / TensorFlow
+- Scikit-learn
+- Data Preprocessing & Feature Engineering
+- Model Training & Evaluation
+- ML Pipeline Design
+- LLM API Integration
+
+---
+
+## PROJECTS SECTION
+
+Replace existing project cards with the following four, keeping the exact same card layout, styling, and tag/badge design already used:
+
+1. **Campus WiFi Management Platform**
+   Tags: Node.js, Express, Prisma, PostgreSQL, MikroTik API, Paystack, Termii
+   Description: "Token-based internet access system for a university campus pilot. Handles payment processing via Paystack, token delivery over WhatsApp/SMS via Termii, and network session control through MikroTik router API."
+
+2. **Multi-Branch Restaurant Operations Dashboard**
+   Tags: React, Node.js, PostgreSQL, REST API
+   Description: "Internal operations dashboard for multi-location restaurant management — order tracking, branch performance metrics, and role-based access control."
+
+3. **Internal Workflow & Client Management System**
+   Tags: Next.js, Node.js, Prisma, PostgreSQL
+   Description: "CRM and workflow tool for service businesses — client records, project pipelines, task management, and status tracking."
+
+4. **AI-Powered Sales Automation Pipeline**
+   Tags: Node.js, DeepSeek API, Gmail OAuth2, Telegram Bot API
+   Description: "Automated outreach pipeline that uses an LLM to generate personalized emails, sends via Gmail OAuth2, and routes lead signals to Telegram for real-time monitoring."
+
+---
+
+## EDUCATION / EXPERIENCE SECTION
+
+- BSc Software Engineering — Miva Open University, In Progress
+- Self-directed ML Engineering track: PyTorch, model training, deployment pipelines
+
+---
+
+## CONTACT SECTION
+
+- Heading: "Let's work together"
+- Sub-text: "Open to software engineering and ML engineering roles, contracts, and technical collaborations."
+- Keep all existing link/button styles exactly as they are
+
+---
+
+## IMPORTANT
+
+Do not touch any CSS, colors, fonts, spacing, animations, or layout. Only the text content and project data changes. Everything visual stays exactly as it is.

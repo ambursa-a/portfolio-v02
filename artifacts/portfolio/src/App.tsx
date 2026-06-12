@@ -19,40 +19,50 @@ const NAV_LINKS = ["About", "Work", "Skills", "Contact"];
 const PROJECTS = [
   {
     id: 1,
-    title: "TaskFlow",
+    title: "Campus WiFi Management Platform",
     description:
-      "Native iOS task-management app enabling users to create, prioritise, and track daily goals with real-time reminders. Built with MVVM architecture and local Core Data persistence synced to a RESTful backend for seamless offline/online functionality.",
-    tags: ["Swift", "SwiftUI", "Core Data", "REST API"],
+      "Token-based internet access system for a university campus pilot. Handles payment processing via Paystack, token delivery over WhatsApp/SMS via Termii, and network session control through MikroTik router API.",
+    tags: ["Node.js", "Express", "Prisma", "PostgreSQL", "MikroTik API", "Paystack", "Termii"],
     year: "2025",
-    link: "/taskflow",
+    link: "",
   },
   {
     id: 2,
-    title: "ShopNow",
+    title: "Multi-Branch Restaurant Operations Dashboard",
     description:
-      "Full-stack e-commerce platform featuring product listings, shopping cart, JWT-based authentication, and role-based access control for admin and customers. Built from scratch with a secure Node.js/Express API and a dynamic React frontend.",
-    tags: ["MongoDB", "Express.js", "React.js", "Node.js"],
+      "Internal operations dashboard for multi-location restaurant management — order tracking, branch performance metrics, and role-based access control.",
+    tags: ["React", "Node.js", "PostgreSQL", "REST API"],
     year: "2025",
-    link: "/shopnow",
+    link: "",
+  },
+  {
+    id: 3,
+    title: "Internal Workflow & Client Management System",
+    description:
+      "CRM and workflow tool for service businesses — client records, project pipelines, task management, and status tracking.",
+    tags: ["Next.js", "Node.js", "Prisma", "PostgreSQL"],
+    year: "2025",
+    link: "",
+  },
+  {
+    id: 4,
+    title: "AI-Powered Sales Automation Pipeline",
+    description:
+      "Automated outreach pipeline that uses an LLM to generate personalized emails, sends via Gmail OAuth2, and routes lead signals to Telegram for real-time monitoring.",
+    tags: ["Node.js", "DeepSeek API", "Gmail OAuth2", "Telegram Bot API"],
+    year: "2025",
+    link: "",
   },
 ];
 
 const SKILLS = [
   {
-    category: "iOS Development",
-    items: ["Swift", "SwiftUI", "UIKit", "Xcode", "Core Data", "REST API"],
+    category: "Software Engineering",
+    items: ["Node.js / Express", "React / Next.js", "PostgreSQL / Prisma ORM", "REST API Design", "System Architecture", "Docker"],
   },
   {
-    category: "Frontend",
-    items: ["React.js", "JavaScript (ES6+)", "HTML5", "CSS3", "Tailwind CSS"],
-  },
-  {
-    category: "Backend & Database",
-    items: ["Node.js", "Express.js", "MongoDB", "Mongoose ODM"],
-  },
-  {
-    category: "Tools",
-    items: ["Git", "GitHub", "VS Code", "Postman", "Agile / Scrum"],
+    category: "Machine Learning & AI",
+    items: ["Python", "PyTorch / TensorFlow", "Scikit-learn", "Data Preprocessing & Feature Engineering", "Model Training & Evaluation", "ML Pipeline Design", "LLM API Integration"],
   },
 ];
 
@@ -376,15 +386,13 @@ function Portfolio() {
 
           <FadeIn delay={0.15}>
             <p className="text-base text-muted-foreground mb-2 font-medium">
-              Junior Software Engineer
+              Software & Machine Learning Engineer
             </p>
           </FadeIn>
 
           <FadeIn delay={0.2}>
             <p className="text-[clamp(0.95rem,1.5vw,1.1rem)] text-muted-foreground max-w-[520px] leading-[1.75] mb-12">
-              Passionate about building high-quality iOS applications and full-stack
-              web solutions. A quick learner eager to contribute to collaborative
-              engineering teams and grow through real-world challenges.
+              I build production systems and intelligent applications.
             </p>
           </FadeIn>
 
@@ -451,7 +459,7 @@ function Portfolio() {
           {PROJECTS.map((project, i) => (
             <FadeIn key={project.id} delay={i * 0.1}>
               <button
-                onClick={() => navigate(project.link)}
+                onClick={() => project.link && navigate(project.link)}
                 data-testid={`card-project-${project.id}`}
                 className="group w-full text-left border-t border-border py-10 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-[72px_1fr_auto] gap-x-10 items-start hover:bg-muted/40 transition-colors"
               >
@@ -532,7 +540,7 @@ function Portfolio() {
                 Miva Open University
               </p>
               <p className="text-sm text-muted-foreground mb-1">
-                B.Sc. Software Engineering (In Progress)
+                BSc Software Engineering — In Progress
               </p>
               <p className="text-xs text-muted-foreground">
                 Expected Graduation: 2027 · Nigeria
@@ -542,14 +550,14 @@ function Portfolio() {
           <FadeIn delay={0.15}>
             <div className="border border-border p-6">
               <p className="text-xs font-semibold text-foreground tracking-widest uppercase mb-4">
-                Certification
+                ML Engineering Track
               </p>
               <p className="text-sm font-medium text-foreground mb-1">
-                Software Engineering Certificate
+                Self-Directed Study
               </p>
-              <p className="text-sm text-muted-foreground mb-1">Coursera · Issued 2026</p>
+              <p className="text-sm text-muted-foreground mb-1">Ongoing · 2024 – Present</p>
               <p className="text-xs text-muted-foreground">
-                Software design, data structures, algorithms, OOP
+                PyTorch, model training, deployment pipelines
               </p>
             </div>
           </FadeIn>
@@ -564,12 +572,11 @@ function Portfolio() {
               Get in touch
             </p>
             <h2 className="text-[clamp(2rem,5vw,3.5rem)] font-bold tracking-tight text-foreground mb-6 leading-tight">
-              Open to internships,<br />graduate roles &amp; freelance.
+              Let's work<br />together.
             </h2>
             <p className="text-sm text-muted-foreground max-w-[420px] mb-10 leading-relaxed">
-              Based in Nigeria. Currently studying Software Engineering full-time
-              while building real projects. If you have an opportunity or just
-              want to talk, reach out.
+              Open to software engineering and ML engineering roles, contracts,
+              and technical collaborations.
             </p>
             <a
               href="mailto:ambursa.faisal@gmail.com"
