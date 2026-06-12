@@ -6,7 +6,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import TaskFlow from "@/pages/taskflow";
 import ShopNow from "@/pages/shopnow";
-import Hosting from "@/pages/hosting";
 import { GameWidget } from "@/components/GameWidget";
 import { ThemeProvider, useTheme } from "@/lib/theme";
 import { motion, useScroll, useTransform, useSpring, useMotionValue, AnimatePresence } from "framer-motion";
@@ -301,12 +300,6 @@ function Portfolio() {
                 {link}
               </button>
             ))}
-            <button
-              onClick={() => navigate("/hosting")}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors border border-border px-3 py-1"
-            >
-              Hosting
-            </button>
             <button onClick={toggle} aria-label="Toggle theme"
               className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
               {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -352,12 +345,6 @@ function Portfolio() {
                     {link}
                   </button>
                 ))}
-                <button
-                  onClick={() => { navigate("/hosting"); setMenuOpen(false); }}
-                  className="text-left py-3 text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Hosting
-                </button>
               </div>
             </motion.div>
           )}
@@ -574,12 +561,6 @@ function Portfolio() {
             Faisal Ambursa
           </span>
           <div className="flex items-center gap-5">
-            <button
-              onClick={() => navigate("/hosting")}
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors font-medium"
-            >
-              Hosting & Domains
-            </button>
             <span className="text-xs text-muted-foreground">
               © {new Date().getFullYear()} · Nigeria
             </span>
@@ -596,7 +577,6 @@ function Router() {
       <Route path="/" component={Portfolio} />
       <Route path="/taskflow" component={TaskFlow} />
       <Route path="/shopnow" component={ShopNow} />
-      <Route path="/hosting" component={Hosting} />
       <Route component={NotFound} />
     </Switch>
   );
