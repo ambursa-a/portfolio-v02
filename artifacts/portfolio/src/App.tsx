@@ -428,16 +428,6 @@ function Portfolio() {
                 GitHub
                 <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
               </a>
-              <a
-                href="https://x.com"
-                target="_blank"
-                rel="noreferrer"
-                data-testid="link-x"
-                className="text-xs text-muted-foreground font-medium hover:text-foreground transition-colors flex items-center gap-1 group"
-              >
-                X
-                <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </a>
             </div>
           </FadeIn>
         </div>
